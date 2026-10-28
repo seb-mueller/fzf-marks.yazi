@@ -29,7 +29,8 @@ return {
 		local child, err = Command("sh")
 			:arg({
 				"-c",
-				"cut -f 3 -d ' ' \"$1\" | fzf",
+				-- Lines are "label : path"; split on the first " : " so both may contain spaces
+				"awk '{ i = index($0, \" : \"); if (i) print substr($0, i + 3) }' \"$1\" | fzf",
 				"sh",
 				marks_file,
 			})
